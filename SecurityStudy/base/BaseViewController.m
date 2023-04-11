@@ -57,10 +57,9 @@
 }
 
 - (IBAction)dylib_act:(UIButton *)sender {
+    NSMutableDictionary *tipDict = [NSMutableDictionary dictionary];
     // 待检测动态库
-    NSArray *dylibArr = @[@"race",@"ptrace", @"substitute", @"erver", @"frida"];
-    
-    NSMutableString *dylib_name = [[NSMutableString alloc] init];
+    NSArray *dylibArr = @[@"/Library/MobileSubstrate/DynamicLibraries", @"substitute", @"frida"];
     
     uint32_t count = _dyld_image_count();
     for (uint32_t i = 0 ; i < count; ++i) {
@@ -69,22 +68,27 @@
         NSString *name2 = [NSString stringWithUTF8String:name];
         for (NSString *symbol_name in dylibArr) {
             if ([name2 containsString:symbol_name]) {
-                [dylib_name appendString:name2];
-                [dylib_name appendString:@"\n"];
+                [tipDict setValue:@"可疑动态库" forKey:name2];
             }
         }
     }
-    [self.show setText:dylib_name];
+    [self showLog:tipDict];
 }
 
 - (IBAction)frida_act:(UIButton *)sender {
-    NSString *frida_path = @"/usr/lib/frida/frida-agent.dylib";
+    NSMutableDictionary *tipDict = [NSMutableDictionary dictionary];
+    NSArray *fileArr = @[@"/usr/lib/frida/frida-agent.dylib"];
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    if ([fileManager fileExistsAtPath:frida_path]) {
-        [self.show setText:@"检测到 frida"];
-    }else{
-        [self.show setText:@"没有 frida"];
+    for (NSString *filePath in fileArr) {
+        if ([fileManager fileExistsAtPath:filePath]) {
+            //            [self.show setText:@"检测到 frida"];
+            [tipDict setValue:@"检测到了" forKey:filePath];
+        }else{
+            [tipDict setValue:@"没检测到" forKey:filePath];
+        }
     }
+    
+    [self showLog:tipDict];
 }
 
 - (IBAction)jailbreak_check:(UIButton *)sender {
@@ -96,6 +100,29 @@
         result = @"没有越狱";
     }
     _show.text = result;
+}
+
+-(void)showTip:(NSString * _Nonnull)tip {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.show setText:tip];
+        NSLog(@"%@",tip);
+    });
+}
+
+-(void)showLog:(NSDictionary * _Nonnull)tipDict {
+    NSError *err;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:tipDict options:NSJSONWritingPrettyPrinted error:&err];
+    
+    if (err) {
+        [self showTip:[err localizedFailureReason]];
+    }else{
+        NSString *logStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        [self showTip:logStr];
+    }
+}
+
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [self.view endEditing:YES];
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
