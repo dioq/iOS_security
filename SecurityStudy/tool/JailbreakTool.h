@@ -11,7 +11,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface JailbreakTool : NSObject
 
-+ (BOOL)isJailbroken;
++(instancetype)sharedManager;
+-(BOOL)isJailbroken;
 
 @end
 

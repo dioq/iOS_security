@@ -59,7 +59,7 @@
                             <state key="normal" title="Button"/>
                             <buttonConfiguration key="configuration" style="plain" title="可疑文件检测"/>
                             <connections>
-                                <action selector="frida_act:" destination="-1" eventType="touchUpInside" id="8Ba-RP-CNP"/>
+                                <action selector="files_check_act:" destination="-1" eventType="touchUpInside" id="8Ba-RP-CNP"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lvd-fA-9pP">

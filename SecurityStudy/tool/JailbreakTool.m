@@ -10,32 +10,48 @@
 
 @implementation JailbreakTool
 
-+(BOOL)isJailbroken{
-    JailbreakTool *my = [self new];
-    BOOL status1 = [my checkFile];
-    BOOL status2 = [my canCallCydia];
-    BOOL status3 = [my checkEnv];
++ (instancetype)sharedManager {
+    static JailbreakTool *staticInstance = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        staticInstance = [[super allocWithZone:NULL] init]; // 与下面两个方匹配
+    });
+    return staticInstance;
+}
+
++(id)allocWithZone:(struct _NSZone *)zone{
+    return [[self class] sharedManager];
+}
+
+-(id)copyWithZone:(struct _NSZone *)zone{
+    return [[self class] sharedManager];
+}
+
+-(BOOL)isJailbroken{
+    BOOL status1 = [self checkFile];
+    BOOL status2 = [self canCallCydia];
+    BOOL status3 = [self checkEnv];
     BOOL status = status1 || status2 || status3;
     return  status;
 }
 
-static const char* jailbreak_files[] = {
-    "/Applications/Cydia.app",
-    "/Applications/limera1n.app",
-    "/Applications/greenpois0n.app",
-    "/Applications/blackra1n.app",
-    "/Applications/blacksn0w.app",
-    "/Applications/redsn0w.app",
-    "/Applications/Absinthe.app",
-    "/User/Applications/",
-    "/private/var/lib/apt/",
-    NULL,
-};
-
-- (BOOL) checkFile {
-    for(int i = 0; jailbreak_files[i] != NULL;i++){
-        if([[NSFileManager defaultManager] fileExistsAtPath:[NSString stringWithUTF8String:jailbreak_files[i]]]) {
-//            NSLog(@"isjailbroken: %s", jailbreak_files[i]);
+-(BOOL)checkFile {
+    // 待检测动态库
+    NSArray *filePaths = @[
+        @"/Applications/Cydia.app",
+        @"/Applications/limera1n.app",
+        @"/Applications/greenpois0n.app",
+        @"/Applications/blackra1n.app",
+        @"/Applications/blacksn0w.app",
+        @"/Applications/redsn0w.app",
+        @"/Applications/Absinthe.app",
+        @"/User/Applications/",
+        @"/private/var/lib/apt/"
+    ];
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    for (NSString *filePath in filePaths) {
+        if([fileManager fileExistsAtPath:filePath]) {
             return YES;
         }
     }
@@ -45,10 +61,8 @@ static const char* jailbreak_files[] = {
 //能否唤起Cydia商店
 -(BOOL)canCallCydia {
     if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"cydia://"]]) {
-        //    NSLog(@"The device is jail broken!");
         return YES;
     }
-    //    NSLog(@"The device is NOT jail broken!");
     return NO;
 }
 

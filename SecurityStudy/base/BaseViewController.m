@@ -21,7 +21,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = @"反调试";
+    self.navigationItem.title = @"基本防护";
     self.show.delegate = self;
 }
 
@@ -75,31 +75,29 @@
     [self showLog:tipDict];
 }
 
-- (IBAction)frida_act:(UIButton *)sender {
+- (IBAction)files_check_act:(UIButton *)sender {
     NSMutableDictionary *tipDict = [NSMutableDictionary dictionary];
     NSArray *fileArr = @[@"/usr/lib/frida/frida-agent.dylib"];
     NSFileManager *fileManager = [NSFileManager defaultManager];
     for (NSString *filePath in fileArr) {
         if ([fileManager fileExistsAtPath:filePath]) {
-            //            [self.show setText:@"检测到 frida"];
             [tipDict setValue:@"检测到了" forKey:filePath];
         }else{
             [tipDict setValue:@"没检测到" forKey:filePath];
         }
     }
-    
     [self showLog:tipDict];
 }
 
 - (IBAction)jailbreak_check:(UIButton *)sender {
-    BOOL isOr = [JailbreakTool isJailbroken];
+    BOOL isOr = [[JailbreakTool sharedManager] isJailbroken];
     NSString *result = nil;
     if (isOr) {
         result = @"已经越狱";
     }else{
         result = @"没有越狱";
     }
-    _show.text = result;
+    [self showTip:result];
 }
 
 -(void)showTip:(NSString * _Nonnull)tip {
