@@ -36,7 +36,6 @@
 }
 
 -(BOOL)checkFile {
-    // 待检测动态库
     NSArray *filePaths = @[
         @"/Applications/Cydia.app",
         @"/Applications/limera1n.app",

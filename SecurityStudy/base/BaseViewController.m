@@ -13,6 +13,12 @@
 
 @interface BaseViewController ()<UITextViewDelegate>
 
+// 动态库黑名单
+@property(nonatomic,strong)NSMutableArray *blacklist_dylib;
+// 动态库白名单
+@property(nonatomic,strong)NSMutableArray *whitelist_dylib;
+// 文件黑名单
+@property(nonatomic,strong)NSMutableArray *blacklist_file;
 @property (weak, nonatomic) IBOutlet UITextView *show;
 
 @end
@@ -23,6 +29,26 @@
     [super viewDidLoad];
     self.navigationItem.title = @"基本防护";
     self.show.delegate = self;
+    
+    self.blacklist_dylib = [[NSMutableArray alloc] init];
+    self.whitelist_dylib = [[NSMutableArray alloc] init];
+    [self.blacklist_dylib addObject:@"/Library/MobileSubstrate/DynamicLibraries"];
+    [self.blacklist_dylib addObject:@"frida"];
+    
+    self.blacklist_file = [[NSMutableArray alloc] init];
+    [self.blacklist_file addObject:@"/usr/lib/frida/frida-agent.dylib"];
+    NSArray *jailbroke_files = @[
+        @"/Applications/Cydia.app",
+        @"/Applications/limera1n.app",
+        @"/Applications/greenpois0n.app",
+        @"/Applications/blackra1n.app",
+        @"/Applications/blacksn0w.app",
+        @"/Applications/redsn0w.app",
+        @"/Applications/Absinthe.app",
+        @"/User/Applications/",
+        @"/private/var/lib/apt/"
+    ];
+    [self.blacklist_file addObjectsFromArray:jailbroke_files];
 }
 
 - (IBAction)ptrace_act:(UIButton *)sender {
@@ -56,32 +82,28 @@
     }
 }
 
-- (IBAction)dylib_act:(UIButton *)sender {
+- (IBAction)dylib_check:(UIButton *)sender {
     NSMutableDictionary *tipDict = [NSMutableDictionary dictionary];
-    // 待检测动态库
-    NSArray *dylibArr = @[@"/Library/MobileSubstrate/DynamicLibraries", @"substitute", @"frida"];
-    
     uint32_t count = _dyld_image_count();
     for (uint32_t i = 0 ; i < count; ++i) {
-        const char *name = _dyld_get_image_name(i);
-        printf("%s\n",name);
-        NSString *name2 = [NSString stringWithUTF8String:name];
-        for (NSString *symbol_name in dylibArr) {
-            if ([name2 containsString:symbol_name]) {
-                [tipDict setValue:@"可疑动态库" forKey:name2];
+        const char *image_name = _dyld_get_image_name(i);
+        //        printf("%s\n",name);
+        NSString *image_name2 = [NSString stringWithUTF8String:image_name];
+        for (NSString *dylib_name in self.blacklist_dylib) {
+            if ([image_name2 containsString:dylib_name]) {
+                [tipDict setValue:@"可疑动态库" forKey:image_name2];
             }
         }
     }
     [self showLog:tipDict];
 }
 
-- (IBAction)files_check_act:(UIButton *)sender {
+- (IBAction)file_check:(UIButton *)sender {
     NSMutableDictionary *tipDict = [NSMutableDictionary dictionary];
-    NSArray *fileArr = @[@"/usr/lib/frida/frida-agent.dylib"];
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    for (NSString *filePath in fileArr) {
+    for (NSString *filePath in self.blacklist_file) {
         if ([fileManager fileExistsAtPath:filePath]) {
-            [tipDict setValue:@"检测到了" forKey:filePath];
+            [tipDict setValue:@"存在" forKey:filePath];
         }else{
             [tipDict setValue:@"没检测到" forKey:filePath];
         }

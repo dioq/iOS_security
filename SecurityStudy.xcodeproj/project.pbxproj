@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A86924429FEDD9B00BAE40B /* whitelist_old.zip in Resources */ = {isa = PBXBuildFile; fileRef = 3A86924329FEDD9B00BAE40B /* whitelist_old.zip */; };
 		3AC05B4B29E58CB50002C598 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AC05B4A29E58CB50002C598 /* AppDelegate.m */; };
 		3AC05B5629E58CB60002C598 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3AC05B5529E58CB60002C598 /* Assets.xcassets */; };
 		3AC05B5929E58CB60002C598 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3AC05B5729E58CB60002C598 /* LaunchScreen.storyboard */; };
@@ -23,6 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3A86924329FEDD9B00BAE40B /* whitelist_old.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = whitelist_old.zip; sourceTree = "<group>"; };
 		3AC05B4629E58CB50002C598 /* SecurityStudy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SecurityStudy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AC05B4929E58CB50002C598 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		3AC05B4A29E58CB50002C598 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 		3AC05B6F29E58E610002C598 /* base */ = {
 			isa = PBXGroup;
 			children = (
+				3A86924329FEDD9B00BAE40B /* whitelist_old.zip */,
 				3AC05B7029E58E760002C598 /* BaseViewController.h */,
 				3AC05B7129E58E760002C598 /* BaseViewController.m */,
 				3AC05B7229E58E760002C598 /* BaseViewController.xib */,
@@ -204,6 +207,7 @@
 				3AC05B5929E58CB60002C598 /* LaunchScreen.storyboard in Resources */,
 				3AC05B7429E58E760002C598 /* BaseViewController.xib in Resources */,
 				3AC05B6E29E58E5D0002C598 /* SignViewController.xib in Resources */,
+				3A86924429FEDD9B00BAE40B /* whitelist_old.zip in Resources */,
 				3AC05B7F29E5956C0002C598 /* NetworkViewController.xib in Resources */,
 				3AC05B5629E58CB60002C598 /* Assets.xcassets in Resources */,
 			);

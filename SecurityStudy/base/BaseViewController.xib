@@ -48,9 +48,9 @@
                             <rect key="frame" x="0.0" y="90" width="373" height="40"/>
                             <color key="backgroundColor" systemColor="systemGray6Color"/>
                             <state key="normal" title="Button"/>
-                            <buttonConfiguration key="configuration" style="plain" title="检测注入的动态库 dylib"/>
+                            <buttonConfiguration key="configuration" style="plain" title="检测加载的动态库"/>
                             <connections>
-                                <action selector="dylib_act:" destination="-1" eventType="touchUpInside" id="tP0-mp-gP9"/>
+                                <action selector="dylib_check:" destination="-1" eventType="touchUpInside" id="50e-SG-BM2"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8gK-rs-Pob">
@@ -59,14 +59,14 @@
                             <state key="normal" title="Button"/>
                             <buttonConfiguration key="configuration" style="plain" title="可疑文件检测"/>
                             <connections>
-                                <action selector="files_check_act:" destination="-1" eventType="touchUpInside" id="8Ba-RP-CNP"/>
+                                <action selector="file_check:" destination="-1" eventType="touchUpInside" id="nfh-S1-vOr"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lvd-fA-9pP">
                             <rect key="frame" x="0.0" y="180" width="373" height="40"/>
                             <color key="backgroundColor" systemColor="systemGray6Color"/>
                             <state key="normal" title="Button"/>
-                            <buttonConfiguration key="configuration" style="plain" title="越狱检测"/>
+                            <buttonConfiguration key="configuration" style="plain" title="越狱检测(随便写一下)"/>
                             <connections>
                                 <action selector="jailbreak_check:" destination="-1" eventType="touchUpInside" id="b9d-9o-FIY"/>
                             </connections>
